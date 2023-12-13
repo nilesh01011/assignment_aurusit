@@ -1,0 +1,23 @@
+.inputType {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-bottom: 1px solid #000;
+}
+.inputType label {
+  text-transform: capitalize;
+  color: #a8a8a8;
+  font-size: 12px;
+}
+.inputType input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding-bottom: 6px;
+}
+.inputType input::-moz-placeholder {
+  color: #CACACA;
+}
+.inputType input::placeholder {
+  color: #CACACA;
+}/*# sourceMappingURL=styles.css.map */
