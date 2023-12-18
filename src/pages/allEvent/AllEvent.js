@@ -1,8 +1,14 @@
-import React from 'react';
-import { eventData } from '../../data';
+import React, { useEffect } from 'react';
 import EventItems from '../../components/eventsItems/EventItems';
+import { useSelector } from 'react-redux';
 
-function HomePage() {
+function AllEventPage() {
+  const { eventItems } = useSelector((state) => state.addEvent);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="container">
       {/* header */}
@@ -19,10 +25,9 @@ function HomePage() {
           </div>
           {/* grid contents */}
           <div className="grid_container">
-            {eventData.map((ele, index) => (
+            {eventItems.map((ele, index) => (
               <EventItems key={index} {...ele} />
             ))}
-            {/* <EventItems /> */}
           </div>
         </div>
       </main>
@@ -30,4 +35,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default AllEventPage;

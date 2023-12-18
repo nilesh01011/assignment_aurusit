@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import InputFields from '../../components/inputFields/InputFields';
-import RadioButton from '../../components/radioButton/RadioButton';
-import UploadEventFileItems from '../../components/uploadEventFile/UploadEventFileItems';
-import { Link } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  addEventItems,
-  updateEventItems,
-} from '../../redux/slices/addEventItemsSlice';
-import { useNavigate, useParams } from 'react-router-dom';
+import InputFields from '../../components/inputFields/InputFields';
+import UploadEventFileItems from '../../components/uploadEventFile/UploadEventFileItems';
+import RadioButton from '../../components/radioButton/RadioButton';
 
-function AddEventPage() {
+function EditEvent() {
   const { eventItems } = useSelector((state) => state.addEvent);
   const dispatch = useDispatch();
 
@@ -19,11 +14,14 @@ function AddEventPage() {
   const { id } = useParams();
 
   // edit event
+  const [isEdit, setIsEdit] = useState(false);
   const [eventGetById, setEventGetById] = useState([]);
 
   useEffect(() => {
     if (id) {
-      const getEvents = eventItems.filter((e) => e.id == id);
+      setIsEdit(true);
+
+      const getEvents = eventItems.filter((e) => e.id === Number(id));
 
       if (getEvents) {
         setEventGetById(getEvents);
@@ -31,41 +29,28 @@ function AddEventPage() {
     }
   }, [id]);
 
-  const { name, date, fileType, fileSrc, link, attendees } =
-    eventGetById.length > 0 ? eventGetById[0] : {};
-
   // event name
-  const [eventName, setEventName] = useState('');
+  const [eventName, setEventName] = useState("");
+
+  console.log(eventGetById[0]?.name)
+
   const [errorEventName, setErrorEventName] = useState('');
   // date value
-  const [dates, setDates] = useState('');
+  const [date, setDate] = useState(id && eventGetById[0]?.date);
   const [errorDate, setErrorDate] = useState('');
   // file types select
-  const [radioType, setRadioType] = useState(id ? fileType : 'image');
+  const [radioType, setRadioType] = useState('image');
   // event url value
-  const [eventUrl, setEventUrl] = useState('');
+  const [eventUrl, setEventUrl] = useState(id && eventGetById[0]?.link);
   const [errorEventUrl, setErrorEventUrl] = useState('');
   // files types
-  const [files, setFiles] = useState('');
+  const [files, setFiles] = useState(id && eventGetById[0]?.fileSrc);
   const [errorFiles, setErrorFiles] = useState('');
   // files attendeeFiles
-  const [attendeeFiles, setAttendeeFiles] = useState('');
+  const [attendeeFiles, setAttendeeFiles] = useState(id && eventGetById[0]?.attendees);
   const [errorAttendeeFiles, setErrorAttendeeFiles] = useState('');
 
-  // useEffect(() => {
-  //   if (id && eventGetById[0]) {
-  //     setEventName(eventGetById[0]?.name);
-
-  //     setDates(eventGetById[0]?.date);
-
-  //     setEventUrl(eventGetById[0]?.link);
-
-  //     setFiles(eventGetById[0]?.fileSrc);
-
-  //     setAttendeeFiles(eventGetById[0]?.attendees);
-  //   }
-  // }, [eventGetById, id]);
-
+  
   const handleFilesChange = (newFile) => {
     // console.log('files', newFile);
     setFiles(newFile);
@@ -76,6 +61,20 @@ function AddEventPage() {
     setAttendeeFiles(newFile);
   };
 
+//   useEffect(() => {
+//     if (id && eventGetById[0]) {
+//       setEventName(eventGetById[0]?.name);
+
+//       setDate(eventGetById[0]?.date);
+
+//       setEventUrl(eventGetById[0]?.link);
+
+//       setFiles(eventGetById[0]?.fileSrc);
+
+//       setAttendeeFiles(eventGetById[0]?.attendees);
+//     }
+//   }, [eventGetById, id]);
+
   const errorValidation = () => {
     // error handles
     if (files === '') {
@@ -84,7 +83,7 @@ function AddEventPage() {
     if (attendeeFiles === '') {
       setErrorAttendeeFiles('Attendee Files is required!');
     }
-    if (dates === '') {
+    if (date === '') {
       setErrorDate('Event Date is required!');
     }
     if (eventUrl === '') {
@@ -95,38 +94,37 @@ function AddEventPage() {
     }
   };
 
-  // submit file
-  const handleSubmit = (e) => {
-    // e.preventDefault();
+  // update file
+  const handleUpdate = (e) => {
+    e.preventDefault();
 
     errorValidation();
 
-    // console.log('add data:',eventName, dates, eventUrl, files, attendeeFiles);
+    if (eventName && date && eventUrl && files && attendeeFiles) {
+      console.log(eventName, date, eventUrl, files, attendeeFiles);
 
-    if (eventName && dates && eventUrl && files && attendeeFiles) {
-      console.log(eventName && dates && eventUrl && files && attendeeFiles);
       // dispatch(
       //   addEventItems({
       //     id: eventItems.length + 1,
       //     name: eventName,
-      //     date: dates,
+      //     date: date,
       //     fileType: radioType,
-      //     attendees: `/${attendeeFiles}`,
-      //     fileSrc: `/${files}`,
+      //     attendee: attendeeFiles,
+      //     fileSrc: files,
       //     link: eventUrl,
       //     description: '',
       //   })
       // );
 
       // clear all values
-      // setEventName('');
-      // setDates('');
-      // setRadioType('image');
-      // setEventUrl('');
-      // setFiles('');
-      // setAttendeeFiles('');
+      setEventName('');
+      setDate('');
+      setRadioType('image');
+      setEventUrl('');
+      setFiles('');
+      setAttendeeFiles('');
 
-      // navigate('/all-event');
+      navigate('/all-event');
 
       // setErrorEventName('');
       // setErrorDate('');
@@ -135,57 +133,6 @@ function AddEventPage() {
       // setErrorAttendeeFiles('');
     }
   };
-
-  // update event
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    errorValidation();
-
-    if (eventName && dates && eventUrl && files && attendeeFiles) {
-      console.log(
-        'Update Data:',
-        eventName,
-        dates,
-        eventUrl,
-        files,
-        attendeeFiles
-      );
-      // dispatch(
-      //   updateEventItems({
-      //     id: id,
-      //     name: eventName,
-      //     date: dates,
-      //     fileType: radioType,
-      //     attendees: `/${attendeeFiles}`,
-      //     fileSrc: `/${files}`,
-      //     link: eventUrl,
-      //   })
-      // );
-
-      // clear all values
-
-      // setEventName('');
-      // setDates('');
-      // setRadioType('image');
-      // setEventUrl('');
-      // setFiles('');
-      // setAttendeeFiles('');
-
-      // navigate('/all-event');
-    }
-  };
-
-  // handle events form
-  const handleFormEvents = (e) => {
-    e.preventDefault();
-
-    if (id) {
-      return handleUpdate();
-    }
-
-    handleSubmit();
-  };
-
   return (
     <div className="container">
       {/* header */}
@@ -194,14 +141,10 @@ function AddEventPage() {
       <main>
         <div className="main_Container formContainer">
           {/* title */}
-          <h2>Add an Events</h2>
+          <h2>Update an Events</h2>
 
           {/* form contents */}
-          <form
-            className="addEventForm"
-            onSubmit={handleFormEvents}
-            // onSubmit={id ? handleUpdate : handleSubmit}
-          >
+          <form className="addEventForm" onSubmit={handleUpdate}>
             {/* InputFields */}
             <InputFields
               label="event name"
@@ -210,18 +153,14 @@ function AddEventPage() {
               onChanged={setEventName}
               value={eventName}
               error={errorEventName}
-              // edit event name
-              editEvent={id && name}
             />
             <InputFields
               label="event date"
               inputType="date"
               placeholder="select event Date"
-              onChanged={setDates}
-              value={dates}
+              onChanged={setDate}
+              value={date}
               error={errorDate}
-              // edit event date
-              editEvent={id && date}
             />
             {/* radio button */}
             <div className="radioContainer">
@@ -243,7 +182,7 @@ function AddEventPage() {
               label="Event file type"
               subtext="upload event file here"
               onFileChange={handleFilesChange}
-              uploadFile={id ? fileSrc : files}
+              uploadFile={files}
               formId="files"
               error={errorFiles}
             />
@@ -253,7 +192,7 @@ function AddEventPage() {
               label="upload attendee list event"
               subtext="upload attendee list excel"
               onFileChange={handleAttendeefilesChange}
-              uploadFile={id ? attendees : attendeeFiles}
+              uploadFile={attendeeFiles}
               formId="attendeefiles"
               error={errorAttendeeFiles}
             />
@@ -266,15 +205,12 @@ function AddEventPage() {
               onChanged={setEventUrl}
               value={eventUrl}
               error={errorEventUrl}
-              // edit event links
-              editEvent={id && link}
             />
             {/* submit button */}
             <div className="submitBtn">
-              <button type="submit" className={`buttons largeBtn`}>
-                {/* {id ? 'update' : 'submit'} */}
-                submit
-              </button>
+                <button type="submit" className={`buttons largeBtn`}>
+                  Update
+                </button>
               {/* show all events items */}
               <Link to="/all-event" className="links">
                 see all event
@@ -287,4 +223,4 @@ function AddEventPage() {
   );
 }
 
-export default AddEventPage;
+export default EditEvent;

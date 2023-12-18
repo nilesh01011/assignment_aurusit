@@ -1,15 +1,39 @@
 import React from 'react';
-import "./styles.scss"
+import './styles.scss';
+import Label from '../label/Label';
 
-function InputFields({label,inputType,placeholder}) {
+function InputFields({
+  label,
+  inputType,
+  placeholder,
+  onChanged,
+  value,
+  error,
+}) {
+
   return (
-    <div className='inputType'>
+    <>
+      <div
+        className="inputType"
+      >
         {/* label */}
-        <label>{label}</label>
+        <Label label={label} />
         {/* input */}
-        <input type={inputType} placeholder={placeholder} />
-    </div>
-  )
+        <input
+          type={inputType}
+          placeholder={placeholder}
+          value={value}
+          // defaultValue={editEvent}
+          onChange={(e) => onChanged(e.target.value)}
+          style={{ borderColor: value === "" && error !== "" ? '#ED302D' : '#000' }}
+        />
+
+      {/* errors */}
+      {value === "" && error !== "" && <span className='error'>{error}</span>}
+      </div>
+
+    </>
+  );
 }
 
-export default InputFields
+export default InputFields;

@@ -5,8 +5,8 @@
     cursor: pointer;
 
     & p {
-        width: 12px;
-        height: 12px;
+        width: 16px;
+        height: 16px;
         border: 1px solid #000;
         border-radius: 50%;
         display: flex;
@@ -14,8 +14,8 @@
         justify-content: center;
 
         & span {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
         }
     }

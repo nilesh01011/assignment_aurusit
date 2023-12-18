@@ -1,23 +1,22 @@
 .inputType {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    border-bottom: 1px solid #000;
-
-    & label {
-        text-transform: capitalize;
-        color: #a8a8a8;
-        font-size: 12px;
-    }
 
     & input {
         width: 100%;
         border: none;
+        border-bottom: 1px solid;
         outline: none;
         padding-bottom: 6px;
 
         &::placeholder {
-            color: #CACACA;
+            color: #cacaca;
         }
+    }
+
+    & .error {
+        font-size: 12px;
+        color: #ed302d;
+        margin-top: 0.4rem;
     }
 }

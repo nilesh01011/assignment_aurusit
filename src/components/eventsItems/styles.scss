@@ -29,9 +29,14 @@
             font-size: 0.875rem;
         }
 
-        & p {
+        & p.links {
             font-size: 0.75rem;
             color: #878787;
+            cursor: pointer;
+
+            &:hover {
+                color: #0484E6;
+            }
         }
 
         & .buttonContainer {
