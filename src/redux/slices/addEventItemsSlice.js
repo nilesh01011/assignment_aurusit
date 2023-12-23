@@ -8,28 +8,54 @@ export const addEventItemsSlice = createSlice({
   },
   reducers: {
     addEventItems: (state, action) => {
-      console.log("add event State:",action.payload)
+      // console.log('add event State:', action.payload);
       state.eventItems.push(action.payload);
     },
 
     updateEventItems: (state, action) => {
-      const { id, eventName, date, radioType, attendeeFiles, files, eventUrl } =
-        action.payload;
+      const {
+        id,
+        name,
+        date,
+        fileType,
+        attendees,
+        fileSrc,
+        link,
+        description,
+      } = action.payload;
 
-      const eventDataUpdate = state.eventItems.find((e) => e.id == id);
+      // getting id of event and updated
+      const eventIndex = state.eventItems.findIndex((e) => e.id === Number(id));
 
-      if (eventDataUpdate) {
-        eventDataUpdate.name = eventName;
-        eventDataUpdate.date = date;
-        eventDataUpdate.fileType = radioType;
-        eventDataUpdate.attendees = attendeeFiles;
-        eventDataUpdate.fileSrc = files;
-        eventDataUpdate.link = eventUrl;
+      // files src / added to event images
+      const sanitizedFileSrc = `/${fileSrc.trimStart('/')}`.replace(
+        /\/+/g,
+        '/'
+      );
+      const sanitizedAttendees = `/${attendees.trimStart('/')}`.replace(
+        /\/+/g,
+        '/'
+      );
+
+      if (eventIndex !== -1) {
+        state.eventItems[eventIndex] = {
+          id: Number(id),
+          name: name,
+          date: date,
+          fileType: fileType,
+          attendees: sanitizedAttendees,
+          fileSrc: sanitizedFileSrc,
+          link: link,
+          description: description,
+        };
       }
+
+      console.log('redux:', action.payload);
+      console.log('updated:', state.eventItems);
     },
 
     deleteEventItems: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.eventItems = state.eventItems.filter(
         (e) => e.id !== action.payload.id
       );
@@ -38,10 +64,7 @@ export const addEventItemsSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  addEventItems,
-  updateEventItems,
-  deleteEventItems,
-} = addEventItemsSlice.actions;
+export const { addEventItems, updateEventItems, deleteEventItems } =
+  addEventItemsSlice.actions;
 
 export default addEventItemsSlice.reducer;

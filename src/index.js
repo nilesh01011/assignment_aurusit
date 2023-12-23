@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AllEventPage from './pages/allEvent/AllEvent';
 import AddEventPage from './pages/addEvents/AddEventPage';
 import { persistor, store } from './redux/store';
-import EditEvent from './pages/editEvent/EditEvent';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -25,7 +24,6 @@ root.render(
 
             {/* edit page */}
             <Route path="/edit/:id" element={<AddEventPage />}></Route>
-            {/* <Route path="/edit/:id" element={<EditEvent />}></Route> */}
             {/* Other Routes */}
             {/* <Route path="/*" element={<AddEventPage />} /> */}
           </Routes>

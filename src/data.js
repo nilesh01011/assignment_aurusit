@@ -43,7 +43,7 @@ export const eventData = [
     "id": 5,
     "name": "kisna diamond marathon 2023 - run for swachh bharat",
     "date": "24th Dec, 2023",
-    "fileType": "image",
+    "fileType": "video",
     "attendees": "./excel-sheet5",
     "fileSrc": "./images/event5.webp",
     "link": "http://localhost:3000/5",

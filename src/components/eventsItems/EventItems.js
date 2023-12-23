@@ -44,7 +44,7 @@ function EventItems({
     <div className="eventItems">
       {/* images */}
       <div className="images">
-        <img src={fileSrc && fileSrc} alt={name} />
+        <img src={fileSrc && fileSrc} alt={name+" images"} />
       </div>
       {/* contents */}
       <div className="contents">
